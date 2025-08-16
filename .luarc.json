@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace.library": ["/Users/collin/Developer/PlaydateSDK/CoreLibs"],
+  "runtime.version": "Lua 5.4",
+  "hint.enable": true,
+    "diagnostics.globals": [
+        "Player"
+    ],
+    "diagnostics.disable": [
+        "undefined-global"
+    ]
+}
