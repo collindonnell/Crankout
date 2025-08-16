@@ -6,17 +6,30 @@ import "wall"
 import "block"
 
 local pd = playdate
+local gfx = pd.graphics
 
-class('Board').extends()
+class('Board').extends(gfx.sprite)
 
 function Board:setup()
+  self.score = 0
+
   self.player = Player()
   self.player:add()
 
   self.ball = Ball()
   self.ball:add()
+
   self.ball.onCollideBlock = function (block)
     block:remove()
+    self.score = self.score + 10
+  end
+
+  self.ball.onFail = function()
+    gfx.sprite.removeAll()
+    self.player = nil
+    self.ball = nil
+    self.blocks = {}
+    self:setup()
   end
 
   self:addBlocks()

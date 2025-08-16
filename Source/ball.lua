@@ -20,6 +20,12 @@ end
 function Ball:update()
   local goalX = self.x + self.velocity.dx * self.speed
   local goalY = self.y + self.velocity.dy * self.speed
+
+  if goalY > 280 then
+    self.onFail()
+    return
+  end
+
   local _, _, collisions, _ = self:moveWithCollisions(goalX, goalY)
   for _,v in ipairs(collisions) do
     local n = v.normal
