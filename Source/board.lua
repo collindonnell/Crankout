@@ -4,6 +4,7 @@ import "player"
 import "ball"
 import "wall"
 import "block"
+import "textBox"
 
 local pd = playdate
 local gfx = pd.graphics
@@ -12,6 +13,11 @@ class('Board').extends(gfx.sprite)
 
 function Board:setup()
   self.score = 0
+
+  self.scoreBox = TextBox(110, 50, 200, 80)
+  self.scoreBox:setText(tostring(self.score))
+  self.scoreBox:setZIndex(900)
+  self.scoreBox:add()
 
   self.player = Player()
   self.player:add()
@@ -22,10 +28,12 @@ function Board:setup()
   self.ball.onCollideBlock = function (block)
     block:remove()
     self.score = self.score + 10
+    self.scoreBox:setText(tostring(self.score))
   end
 
   self.ball.onFail = function()
     gfx.sprite.removeAll()
+    self.scoreBox = nil
     self.player = nil
     self.ball = nil
     self.blocks = {}
@@ -78,3 +86,4 @@ function Board:addWalls()
   local right = Wall(w, y, wallWidth, h)
   right:add()
 end
+
