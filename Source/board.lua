@@ -5,25 +5,26 @@ import "ball"
 import "wall"
 import "block"
 import "textBox"
+import "SceneManager/gameScene"
 
 local pd = playdate
-local gfx = pd.graphics
 
-class('Board').extends(gfx.sprite)
+class('Board').extends(GameScene)
 
-function Board:setup()
+function Board:onEnter()
   self.score = 0
+  self.failed = false
 
   self.scoreBox = TextBox(110, 50, 200, 80)
   self.scoreBox:setText(tostring(self.score))
   self.scoreBox:setZIndex(900)
-  self.scoreBox:add()
+  self:addSprite(self.scoreBox)
 
   self.player = Player()
-  self.player:add()
+  self:addSprite(self.player)
 
   self.ball = Ball()
-  self.ball:add()
+  self:addSprite(self.ball)
 
   self.ball.onCollideBlock = function (block)
     block:remove()
@@ -32,12 +33,11 @@ function Board:setup()
   end
 
   self.ball.onFail = function()
-    gfx.sprite.removeAll()
-    self.scoreBox = nil
-    self.player = nil
-    self.ball = nil
-    self.blocks = {}
-    self:setup()
+    if not self.failed then
+      SceneManager:pop()
+      SceneManager:push(Board())
+      self.failed = true
+    end
   end
 
   self:addBlocks()
@@ -64,8 +64,8 @@ function Board:addBlocks()
       local y = y0 + padding + (row - 1) * (blockHeight + padding) + blockHeight / 2
 
       local block = Block(x, y, blockWidth, blockHeight)
-      block:add()
-      self.blocks[#self.blocks + 1] = block
+      table.insert(self.blocks, block)
+      self:addSprite(block)
     end
   end
 end
@@ -77,13 +77,13 @@ function Board:addWalls()
   y = y + wallWidth / 2
 
   local top = Wall(x + w / 2, y, w, wallWidth)
-  top:add()
+  self:addSprite(top)
 
   y = y + (h / 2)
   local left = Wall(x, y, wallWidth, h)
-  left:add()
+  self:addSprite(left)
 
   local right = Wall(w, y, wallWidth, h)
-  right:add()
+  self:addSprite(right)
 end
 

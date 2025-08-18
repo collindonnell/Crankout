@@ -3,6 +3,8 @@ import "board"
 local pd = playdate
 local gfx = pd.graphics
 
+SceneManager = import("SceneManager/sceneManager")
+
 TAGS = {
   player = 1,
   block = 2,
@@ -10,10 +12,10 @@ TAGS = {
 }
 
 local board = Board()
-board:setup()
-board:add()
+SceneManager:push(board)
 
 function pd.update()
   gfx.sprite.update()
+  SceneManager:update()
 end
 
