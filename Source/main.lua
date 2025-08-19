@@ -18,4 +18,3 @@ function pd.update()
   gfx.sprite.update()
   SceneManager:update()
 end
-

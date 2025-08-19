@@ -13,8 +13,8 @@ end
 function GameScene:onExit()
   -- optional, clean up
   -- must call super if implemented
-  for _,v in ipairs(self.sprites) do
-    table.remove(self.sprites)
+  for i,v in ipairs(self.sprites) do
+    self.sprites = {}
     v:remove()
   end
 end
@@ -26,4 +26,13 @@ end
 function GameScene:addSprite(sprite)
   table.insert(self.sprites, sprite)
   sprite:add()
+end
+
+function GameScene:removeSprite(sprite)
+  sprite:remove()
+  for i,v in ipairs(self.sprites) do
+    if v == sprite then
+      table.remove(self.sprites, i)
+    end
+  end
 end

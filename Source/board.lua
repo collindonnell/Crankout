@@ -27,7 +27,7 @@ function Board:onEnter()
   self:addSprite(self.ball)
 
   self.ball.onCollideBlock = function (block)
-    block:remove()
+    self:removeSprite(block)
     self.score = self.score + 10
     self.scoreBox:setText(tostring(self.score))
   end
@@ -45,7 +45,6 @@ function Board:onEnter()
 end
 
 function Board:addBlocks()
-  self.blocks = {}
   local x0, y0, sw, _ = pd.display.getRect():unpack()
   local hCount = 8
   local vCount = 4
@@ -64,7 +63,6 @@ function Board:addBlocks()
       local y = y0 + padding + (row - 1) * (blockHeight + padding) + blockHeight / 2
 
       local block = Block(x, y, blockWidth, blockHeight)
-      table.insert(self.blocks, block)
       self:addSprite(block)
     end
   end
@@ -86,4 +84,3 @@ function Board:addWalls()
   local right = Wall(w, y, wallWidth, h)
   self:addSprite(right)
 end
-
